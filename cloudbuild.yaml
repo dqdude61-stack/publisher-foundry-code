@@ -1,13 +1,13 @@
 steps:
-  # Build
+  # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app/my-app:$COMMIT_SHA', '.']
 
-  # Push
+  # Push the image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app/my-app:$COMMIT_SHA']
 
-  # Deploy
+  # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
@@ -21,6 +21,8 @@ steps:
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
+      - '--service-account'
+      - 'cloud-build-deployer@project-f0b12ac3-c217-441c-95b.iam.gserviceaccount.com'
 
 options:
   logging: CLOUD_LOGGING_ONLY
