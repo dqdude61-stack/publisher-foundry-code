@@ -1,28 +1,5 @@
-steps:
-  # Build the container image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app/my-app:$COMMIT_SHA', '.']
-
-  # Push the image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app/my-app:$COMMIT_SHA']
-
-  # Deploy to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args:
-      - 'run'
-      - 'deploy'
-      - 'publisher-foundry-service'
-      - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-app/my-app:$COMMIT_SHA'
-      - '--region'
-      - 'us-central1'
-      - '--platform'
-      - 'managed'
-      - '--allow-unauthenticated'
-      - '--service-account'
-      - 'cloud-build-deployer@project-f0b12ac3-c217-441c-95b.iam.gserviceaccount.com'
-
-options:
-  logging: CLOUD_LOGGING_ONLY
+gcloud run deploy publisher-foundry-service \
+  --image=us-central1-docker.pkg.dev/project-f0b12ac3-c217-441c-95b/my-app/my-app:latest \
+  --region=us-central1 \
+  --platform=managed \
+  --allow-unauthenticated
