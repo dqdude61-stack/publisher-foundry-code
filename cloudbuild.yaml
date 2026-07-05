@@ -1,1 +1,5 @@
-
+gcloud run deploy publisher-foundry-service \
+  --image=us-central1-docker.pkg.dev/project-f0b12ac3-c217-441c-95b/my-app/my-app:latest \
+  --region=us-central1 \
+  --platform=managed \
+  --allow-unauthenticated
